@@ -685,7 +685,8 @@ impl PeLoader {
         // Find CodeView entry
         for entry in entries {
             if entry.typ.get(LE) == IMAGE_DEBUG_TYPE_CODEVIEW {
-                let offset = entry.pointer_to_raw_data.get(LE) as usize;
+                let offset = self.rva_to_file_offset(entry.address_of_raw_data.get(LE) as u64)?;
+
                 let size = entry.size_of_data.get(LE) as usize;
 
                 if offset + size > file_data.len() {
